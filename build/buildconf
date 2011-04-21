@@ -1,0 +1,4 @@
+
+build/cleanup
+
+build/autogen.sh $*

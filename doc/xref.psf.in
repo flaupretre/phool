@@ -1,0 +1,28 @@
+# Package Specification file for @PACKAGE_NAME@ Cross Reference
+#
+#==============================================================================
+
+#-- Documentation files
+
+merge -strip=true -compress=gzip / $(1)
+
+#-- The options
+
+%options
+
+return array(
+	'name' => '@PACKAGE_NAME@ Cross Reference',
+	'version' => '@PACKAGE_VERSION@',
+	'release' => '@RELEASE_NUMBER@',
+	'author' => '@PACKAGE_AUTHOR@',
+	'copyright' => '@PACKAGE_COPYRIGHT@',
+	'url' => '@PACKAGE_URL@',
+	'license' => '@PACKAGE_LICENSE@',
+	'packager' => '@PACKAGE_AUTHOR@',
+	'license_prefix' => '/license',
+	'web_run_script' => '/index.html',
+	'web_access' => '/',            //-- Open access
+	'web_main_redirect' => true
+	);
+
+#----------------

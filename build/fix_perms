@@ -1,0 +1,29 @@
+#
+# Fix file permissions wrongly set by samba transfers
+#
+#====================================================================
+
+chmod -x \
+	.hgignore \
+	.hgtags \
+	`find .hg -type f` \
+	`find . -name '*.php'` \
+	`find . -name '*.c'` \
+	`find . -name '*.h'` \
+	`find . -name '*.m4'` \
+	`find . -name '*.in'` \
+	`find . -name 'Makefile.am'` \
+	`find . -name '*.htm*'` \
+	`find . -name '*.phk'` \
+	ACKNOWLEDGEMENTS \
+	AUTHORS \
+	COPYING \
+	ChangeLog \
+	INSTALL \
+	NEWS \
+	NOTICE \
+	README \
+	TODO \
+	doc/*.[0-9]* \
+	build/debian.* \
+	build/*-rpmlintrc

@@ -1,0 +1,10 @@
+Source: @PACKAGE_NAME@
+Section: @DEB_SECTION@
+Priority: optional
+Maintainer: @PACKAGE_AUTHOR@
+Build-Depends: debhelper (>= 4.1.16), @DEB_BUILD_DEPS@
+
+Package: @PACKAGE_NAME@
+Architecture: @DEB_ARCHITECTURE@
+Depends: ${shlibs:Depends}
+Description: @PACKAGE_SUMMARY@
