@@ -5,7 +5,7 @@ AC_PREREQ(2.59)
 
 #--- Versions are set here
 
-AC_INIT(phool, 1.0, bugs@tekwire.net)
+AC_INIT(phool, 1.1, bugs@tekwire.net)
 
 PACKAGE_DNAME='phool'	# Name to display
 AC_SUBST(PACKAGE_DNAME)
