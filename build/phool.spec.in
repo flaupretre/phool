@@ -25,12 +25,10 @@ BuildArch: @ARCHITECTURE@
 
 %if 0%{?suse_version}
 BuildRequires: @RPM_BUILD_DEPS@
-Requires: @RPM_RUNTIME_DEPS@
 # OBS needs rpmlintrc to ignore errors
 Source99: @PACKAGE_NAME@-rpmlintrc  
 %else
 BuildRequires: @RPM_BUILD_DEPS@
-Requires: @RPM_RUNTIME_DEPS@
 Provides: @PACKAGE_NAME@
 %endif
 
