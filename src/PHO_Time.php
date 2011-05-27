@@ -23,6 +23,14 @@ return @strftime('%d-%b-%Y %H:%M %z',$time);
 }
 
 //---------
+
+public function compound_string($t='now',$tz=NULL)
+{
+$d=new DateTime($t,$tz);
+return $d->format('d-M-Y H:i:s (U)');
+}
+
+//---------
 // $start=microtime() float
 
 public static function delta_ms($start)
