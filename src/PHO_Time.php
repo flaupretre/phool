@@ -24,9 +24,9 @@ return @strftime('%d-%b-%Y %H:%M %z',$time);
 
 //---------
 
-public function compound_string($t='now',$tz=NULL)
+public function compound_string($t='now',$tz)
 {
-$d=new DateTime($t,$tz);
+$d=new DateTime($t,new DateTimeZone($tz));
 return $d->format('d-M-Y H:i:s (U)');
 }
 
