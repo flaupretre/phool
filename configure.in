@@ -30,7 +30,7 @@ AC_SUBST(PACKAGE_SUMMARY)
 
 #------------------------
 
-AC_CONFIG_SRCDIR([src/XPage.php])
+AC_CONFIG_SRCDIR([src/PHO_XPage.php])
 AC_CONFIG_AUX_DIR(build)
 
 AM_INIT_AUTOMAKE

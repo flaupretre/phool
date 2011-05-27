@@ -41,7 +41,7 @@
 
 //----------------------------------------------------------------------------
 
-abstract class PersistentObject extends ModifiableObject
+abstract class PHO_Persistent extends PHO_Modifiable
 {
 // @var string The magic string to write and check
 
@@ -190,4 +190,5 @@ public function save_if_modified($path=null)
 if ($this->modified()) $this->save($path);
 }
 
-} // End of class PersistentObject
+} // End of class PHO_Persistent
+?>

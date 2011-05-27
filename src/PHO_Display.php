@@ -24,12 +24,23 @@
 * Static functions used to display messages (normal, trace, debug...)
 */
 
-class CDisplay
+class PHO_Display
 {
+private static $prefix=array(
+	 2 => '>> ',			// Debug
+	 1 => '> ',				// Trace
+	 0 => '',				// Info
+	-1 => '*Warning* ', 	// Warning
+	-2 => "\n***Error*** "	// Error
+	);
 
 /** @var integer Verbose level, default=0 */
 
 private static $verbose_level=0;
+
+/** @var integer Array containing the error msgs since the beginning */
+
+private static $errors=array();
 
 //----------------------------------------------------------------------------
 /**
@@ -47,7 +58,7 @@ self::$verbose_level++;
 /**
 * Set verbose level
 *
-* @param integer $level Positive integer
+* @param integer $level integer
 * @return void
 */
 
@@ -62,8 +73,6 @@ self::$verbose_level=$level;
 *
 * Display the string if the message level is less or equal to the verbose level
 *
-* The string is prefixed with '>' characters (count equal to the level)
-*
 * @param string $msg The message
 * @param integer $level The message level
 * @return void
@@ -73,7 +82,9 @@ private static function _display($msg,$level)
 {
 if ($level <= self::$verbose_level)
 	{
-	fprintf(STDERR,str_repeat('>',$level).($level ? ' ' : '')."$msg\n");
+	$msg=self::$prefix[$level].$msg."\n";
+	if (defined('STDERR')) fprintf(STDERR,$msg);
+	else echo $msg;
 	}
 }
 
@@ -87,7 +98,46 @@ if ($level <= self::$verbose_level)
 
 public static function error($msg)
 {
-self::msg("\n***ERROR*** $msg\n");
+self::_display($msg,-2);
+self::$errors[]=$msg;
+}
+
+//----------------------------------------------------------------------------
+/**
+* Display a warning message
+*
+* @param string $msg The message
+* @return void
+*/
+
+public static function warning($msg)
+{
+self::_display($msg,-1);
+}
+
+//----------------------------------------------------------------------------
+/**
+* Return the current error count
+*
+* @return int
+*/
+
+public static function error_count()
+{
+return count(self::$errors);
+
+}
+
+//----------------------------------------------------------------------------
+/**
+* Return the error array
+*
+* @return array
+*/
+
+public static function get_errors()
+{
+return self::$errors;
 }
 
 //----------------------------------------------------------------------------
@@ -105,7 +155,20 @@ self::_display($msg,0);
 
 //----------------------------------------------------------------------------
 /**
-* Display a level 1 message
+* Display an info message
+*
+* @param string $msg The message
+* @return void
+*/
+
+public static function info($msg)
+{
+self::_display($msg,0);
+}
+
+//----------------------------------------------------------------------------
+/**
+* Display a trace message
 *
 * @param string $msg The message
 * @return void
@@ -118,7 +181,7 @@ self::_display($msg,1);
 
 //----------------------------------------------------------------------------
 /**
-* Display a level 2 message
+* Display a debug message
 *
 * @param string $msg The message
 * @return void
@@ -160,6 +223,8 @@ return ob_get_clean();
 //----------------------------------------------------------------------------
 /**
 * Display current stack trace
+*
+* @return void
 */
 
 public static function show_trace()
@@ -168,4 +233,32 @@ $e=new Exception();
 print_r($e->getTrace());
 }
 
-} // End of class CDisplay
+//----------------------------------------------------------------------------
+/**
+* Return displayable type of a variable
+*
+* @param any $var
+* @return string
+*/
+
+public static function var_type($var)
+{
+return is_object($var) ? 'object '.get_class($var) : gettype($var);
+}
+
+//----------------------------------------------------------------------------
+/**
+* Convert a boolean to a displayable string
+*
+* @param any $var
+* @return string
+*/
+
+public static function bool2str($var)
+{
+return $var ? 'Yes' : 'No';
+}
+
+//----------------------------------------------------------------------------
+} // End of class PHO_Display
+?>

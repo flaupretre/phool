@@ -27,7 +27,7 @@
  * @author Andrei Zmievski <andrei@php.net>
  *
  */
-class Console_Getopt {
+class PHO_Getopt {
     /**
      * Parses the command-line options.
      *

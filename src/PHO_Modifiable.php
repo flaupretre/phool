@@ -34,7 +34,7 @@
 * When the instance is created, the state is set to 'not-modified'
 */
 
-abstract class ModifiableObject
+abstract class PHO_Modifiable
 {
 /** @var boolean True if the object was modified since creation/load/save */
 
@@ -94,4 +94,5 @@ return $this->modified_flag;
 }
 
 //----------------------------------------------------------------------------
-} // End of class ModifiableObject
+} // End of class PHO_Modifiable
+?>

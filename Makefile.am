@@ -4,12 +4,18 @@ SUBDIRS = doc
 libexec_PROGRAMS = phool.phk
 
 phool_phk_SOURCES = phool.psf \
-	src/CDisplay.php \
-	src/Getopt.php \
-	src/JSON.php \
-	src/ModifiableObject.php \
-	src/PersistentObject.php \
-	src/XPage.php \
+	src/PHO_Display.php \
+	src/PHO_File.php \
+	src/PHO_Getopt.php \
+	src/PHO_HTTP.php \
+	src/PHO_IP.php \
+	src/PHO_JSON.php \
+	src/PHO_Modifiable.php \
+	src/PHO_Persistent.php \
+	src/PHO_Time.php \
+	src/PHO_Util.php \
+	src/PHO_VarContainer.php \
+	src/PHO_XPage.php \
 	COPYING
 
 EXTRA_DIST = ACKNOWLEDGEMENTS NOTICE build/autogen.sh build/buildconf build/cleanup \
