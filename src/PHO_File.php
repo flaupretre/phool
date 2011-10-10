@@ -29,6 +29,7 @@ return strtolower(substr($filename,$dotpos+1));
 public static function combine_path($dir,$rpath)
 {
 if ($dir=='.' || $dir=='') return $rpath;
+if ($rpath==='' || $rpath==='.') return $dir;
 $rpath=trim($rpath,'/');
 $rpath=trim($rpath,'\\');
 
