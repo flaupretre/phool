@@ -83,7 +83,7 @@ private static function _display($msg,$level)
 if ($level <= self::$verbose_level)
 	{
 	$msg=self::$prefix[$level].$msg."\n";
-	if (defined('STDERR')) fprintf(STDERR,$msg);
+	if (defined('STDERR')) fprintf(STDERR,"%s",$msg);
 	else echo $msg;
 	}
 }
