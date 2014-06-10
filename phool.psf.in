@@ -1,0 +1,40 @@
+#
+# Copyright 2011 - Francois Laupretre <francois@tekwire.net>
+#
+#=============================================================================
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License (LGPL) as
+# published by the Free Software Foundation, either version 3 of the License,
+# or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#=============================================================================
+
+# We don't compress the files to avoid a dependency to the zlib extension
+
+merge / $(1)
+
+add /license.txt $(1)/../COPYING
+
+%options
+
+return array(
+	'name' => 'phool',
+	'summary' => 'A PHP Object-Oriented Library',
+	'version' => '@SOFTWARE_VERSION@',
+	'release' => '@SOFTWARE_RELEASE@',
+	'author' => 'Francois Laupretre <mailto:francois@tekwire.net>',
+	'packager' => 'Francois Laupretre <mailto:francois@tekwire.net>',
+	'copyright' => '(C) Francois Laupretre <mailto:francois@tekwire.net>',
+	'url' => 'http://phool.tekwire.net',
+	'license' => 'GNU Lesser General Public License (LGPL) <http://www.gnu.org/licenses/>',
+	'license_prefix' => '/license',
+	); 
+
+#=============================================================================
