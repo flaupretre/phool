@@ -1,5 +1,0 @@
-
-build/buildconf --verbose
-
-./configure $*
-
