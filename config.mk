@@ -17,7 +17,7 @@ PHPXREF = /opt/phpxref/phpxref.pl
 #----------------------------------------------------------------------------
 # Non Configurable parameters
 
-SOFTWARE_VERSION = 1.3
+SOFTWARE_VERSION = 1.4.0
 
 SOFTWARE_RELEASE = 1
 
