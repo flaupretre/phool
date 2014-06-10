@@ -25,15 +25,15 @@ add /license.txt $(1)/../COPYING
 %options
 
 return array(
-	'name' => '@PACKAGE_DNAME@',
-	'summary' => '@PACKAGE_SUMMARY@',
-	'version' => '@PACKAGE_VERSION@',
-	'release' => '@RELEASE_NUMBER@',
-	'author' => '@PACKAGE_AUTHOR@',
-	'packager' => '@PACKAGE_AUTHOR@',
-	'copyright' => '@PACKAGE_COPYRIGHT@',
-	'url' => '@PACKAGE_URL@',
-	'license' => '@PACKAGE_LICENSE@',
+	'name' => 'phool',
+	'summary' => 'A PHP Object-Oriented Library',
+	'version' => '@SOFTWARE_VERSION@',
+	'release' => '@SOFTWARE_RELEASE@',
+	'author' => 'Francois Laupretre <mailto:francois@tekwire.net>',
+	'packager' => 'Francois Laupretre <mailto:francois@tekwire.net>',
+	'copyright' => '(C) Francois Laupretre <mailto:francois@tekwire.net>',
+	'url' => 'http://phool.tekwire.net',
+	'license' => 'GNU Lesser General Public License (LGPL) <http://www.gnu.org/licenses/>',
 	'license_prefix' => '/license',
 	); 
 

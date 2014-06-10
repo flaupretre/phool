@@ -1,5 +1,0 @@
-@PACKAGE_NAME@ (@PACKAGE_VERSION@-@RELEASE_NUMBER@) stable; urgency=low
-
-  * For changelog information, please consult http://@PACKAGE_NAME@.hg.sourceforge.net/hgweb/@PACKAGE_NAME@/@PACKAGE_NAME@/log
-
- -- @PACKAGE_AUTHOR@  Mon, 01 Jan 2011 00:00:00 +0100

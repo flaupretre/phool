@@ -1,4 +1,4 @@
-# Package Specification file for @PACKAGE_NAME@ API
+# Package Specification file for phool API
 #
 #==============================================================================
 
@@ -11,14 +11,14 @@ merge -strip=true -compress=gzip / $(1)
 %options
 
 return array(
-	'name' => '@PACKAGE_NAME@ API Reference',
-	'version' => '@PACKAGE_VERSION@',
-	'release' => '@RELEASE_NUMBER@',
-	'author' => '@PACKAGE_AUTHOR@',
-	'copyright' => '@PACKAGE_COPYRIGHT@',
-	'url' => '@PACKAGE_URL@',
-	'license' => '@PACKAGE_LICENSE@',
-	'packager' => '@PACKAGE_AUTHOR@',
+	'name' => 'Phool API Reference',
+	'version' => '@SOFTWARE_VERSION@',
+	'release' => '@SOFTWARE_RELEASE@',
+	'author' => 'Francois Laupretre <mailto:francois@tekwire.net>',
+	'packager' => 'Francois Laupretre <mailto:francois@tekwire.net>',
+	'copyright' => '(C) Francois Laupretre <mailto:francois@tekwire.net>',
+	'url' => 'http://phool.tekwire.net',
+	'license' => 'GNU Lesser General Public License (LGPL) <http://www.gnu.org/licenses/>',
 	'license_prefix' => '/license',
 	'web_run_script' => '/index.html',
 	'web_access' => '/',            //-- Open access
