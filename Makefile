@@ -12,14 +12,14 @@ EXPAND = build/expand.sh
 
 #------
 
+.PHONY: all clean doc clean_doc
+
 all:  $(TARGETS)
 
 clean: clean_doc
 	/bin/rm -f $(TARGETS) $(PHOOL_PSF)
 
 #------
-
-.PHONY: all clean doc clean_doc
 
 $(PHOOL_PSF): $(PHOOL_PSF).in
 	chmod +x $(EXPAND)
@@ -32,8 +32,8 @@ $(PHOOL_PHK): $(PHOOL_PSF)
 #------
 
 doc:
-	cd doc && $(MAKE)
+	$(MAKE) -C doc
 
 clean_doc:
-	cd doc && $(MAKE) clean
+	$(MAKE) -C doc clean
 

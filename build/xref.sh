@@ -1,18 +1,19 @@
 #
-# Appelle phpxref en se mettant dans le repertoire d'install de phpxref.
-# Si on l'appelle a partir d'un autre repertoire, le resultat n'inclut pas les
-# feuilles de style.
-# Ce wrapper permet de ne pas mettre le repertoire en dur dans le fichier de
-# config
+# Set default directory to phpxref install directory and, then, launch phpxref.
+# If phpxref is called from another directory, the result does not include
+# the style sheets (phpxref bug).
+# This wrapper script allows not to set the output path in the configuration file.
+#
 # Variables :
-# INPUT = Repertoire des sources (relatif par rapport au repertoire du script)
-# OUTPUT = repertoire resultat (absolu)
-# PHPXREF_DIR = repertoire d'install de phpxref
+# INPUT = Directory containing the source files (relative to the directory
+#         containing the script)
+# OUTPUT = Output dir
+# PHPXREF_DIR = phpxref install dir
 #
 # $1 = Config file
 
-if [ -z "$PHPXREF" ] ; then
-	echo "PHPXREF is not defined"
+if [ -z "$PHPXREF_DIR" ] ; then
+	echo "PHPXREF_DIR is not defined"
 	exit 1
 fi
 
@@ -33,6 +34,6 @@ grep -v '^SOURCE=' <$1 | grep -v 'OUTPUT='
 cd $PHPXREF
 perl phpxref.pl -c $TMP
 
-#/bin/rm -f $TMP
+/bin/rm -f $TMP
 
 exit 0

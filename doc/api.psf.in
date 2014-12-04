@@ -19,7 +19,6 @@ return array(
 	'copyright' => '(C) Francois Laupretre <mailto:francois@tekwire.net>',
 	'url' => 'http://phool.tekwire.net',
 	'license' => 'GNU Lesser General Public License (LGPL) <http://www.gnu.org/licenses/>',
-	'license_prefix' => '/license',
 	'web_run_script' => '/index.html',
 	'web_access' => '/',            //-- Open access
 	'web_main_redirect' => true

@@ -10,9 +10,9 @@ PHP = php
 
 PHPDOC = phpdoc
 
-# The command to run phpxref
+#-- The phpxref installation directory
 
-PHPXREF = /opt/phpxref/phpxref.pl
+PHPXREF_DIR=/opt/phpxref
 
 #----------------------------------------------------------------------------
 # Non Configurable parameters

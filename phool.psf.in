@@ -22,7 +22,7 @@ merge / $(1)
 
 add /license.txt $(1)/../COPYING
 
-%options
+%options -syntax=php
 
 return array(
 	'name' => 'phool',

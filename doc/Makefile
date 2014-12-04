@@ -1,63 +1,64 @@
 
 include ../config.mk
 
+PRODUCT = phool
 TMP_DIR = /tmp/.mk.tmp
-
 SOURCE_DIR = ../src
 
-API_PHK = phool_api.phk
-API_PSF = api.psf
-
-XREF_PHK = phool_xref.phk
-XREF_PSF = xref.psf
-XREF_CFG = xref.cfg
-XREF_SCRIPT = ../build/xref.sh
-
-TARGETS = $(API_PHK) $(API_PDF) $(XREF_PHK)
+TARGETS = api.phk xref.phk
+TO_CLEAN = $(TARGETS) api.pdf api.psf xref.psf
 
 PHK_CREATOR = ../build/PHK_Creator.phk
 PHK_CREATE = $(PHP) $(PHK_CREATOR) build
 EXPAND = ../build/expand.sh
+XREF_SCRIPT = ../build/xref.sh
 
 #------
 
-all: doc
+.PHONY: clean
 
-doc: $(TARGETS)
+all: $(TARGETS)
 
 clean:
-	/bin/rm -f $(TARGETS) $(API_PSF) $(XREF_PSF)
+	/bin/rm -f $(TO_CLEAN)
 
-.PHONY: doc clean_doc clean all
+%.psf: %.psf.in
+	chmod +x $(EXPAND)
+	SOFTWARE_VERSION=$(SOFTWARE_VERSION) SOFTWARE_RELEASE=$(SOFTWARE_RELEASE) \
+		$(EXPAND) <$< >$@
 
 #------ API Documentation
 
-$(API_PSF): $(API_PSF).in
-		chmod +x $(EXPAND)
-	SOFTWARE_VERSION=$(SOFWARE_VERSION) SOFTWARE_RELEASE=$(SOFTWARE_RELEASE) \
-	$(EXPAND) <$< >$@
+api.phk: api.psf
+	/bin/rm -rf $(TMP_DIR)
+	mkdir $(TMP_DIR)
+	$(PHPDOC) --help | head -1 | grep 'version 2' >/dev/null ;\
+	if [ $$? = 0 ] ; then opts='-q --title $(PRODUCT)' ;\
+	else opts='-o HTML:frames:DOM/earthli -ti $(PRODUCT)' ; fi;\
+	$(PHPDOC) $$opts -d $(SOURCE_DIR) -t $(TMP_DIR) 
+	$(PHK_CREATE) $@ $< $(TMP_DIR)
+	chmod +r $@
+	/bin/rm -rf $(TMP_DIR)
 
-$(API_PHK): $(API_PSF)
-	/bin/rm -rf $(TMP_DIR); mkdir $(TMP_DIR)
-	$(PHPDOC) --template=clean --title "phool API" -d $(SOURCE_DIR) -t $(TMP_DIR)
-	cp ../COPYING $(TMP_DIR)/license.txt
-	$(PHK_CREATE) $@ $(API_PSF) $(TMP_DIR)
+# Generating a PDF documentation is available in phpdoc V 1 only
+
+api.pdf: api.psf
+	/bin/rm -rf $(TMP_DIR)
+	mkdir $(TMP_DIR)
+	$(PHPDOC) -o PDF:default:default -d $(SOURCE_DIR) \
+		-t $(TMP_DIR) -ti "$(PRODUCT) API"
+	mv $(TMP_DIR)/documentation.pdf $@
 	chmod +r $@
 	/bin/rm -rf $(TMP_DIR)
 
 #------ Cross Reference
 
-$(XREF_PSF): $(XREF_PSF).in
-	chmod +x $(EXPAND)
-	SOFTWARE_VERSION=$(SOFWARE_VERSION) SOFTWARE_RELEASE=$(SOFTWARE_RELEASE) \
-		$(EXPAND) <$< >$@
-
-$(XREF_PHK): $(XREF_PSF)
-	/bin/rm -rf $(TMP_DIR); mkdir $(TMP_DIR)
+xref.phk: xref.psf
+	/bin/rm -rf $(TMP_DIR)
+	mkdir $(TMP_DIR)
 	chmod +x $(XREF_SCRIPT)
-	PHPXREF="$(PHPXREF)" INPUT="$(SOURCE_DIR)" OUTPUT="$(TMP_DIR)" \
-			$(XREF_SCRIPT) $(XREF_CFG)
-	cp ../COPYING $(TMP_DIR)/license.txt
-	$(PHK_CREATE) $@ $(XREF_PSF) $(TMP_DIR)
+	PHPXREF_DIR="$(PHPXREF_DIR)" INPUT="$(SOURCE_DIR)" OUTPUT="$(TMP_DIR)" \
+			$(XREF_SCRIPT) xref.cfg
+	$(PHK_CREATE) $@ $< $(TMP_DIR)
 	chmod +r $@
 	/bin/rm -rf $(TMP_DIR)
