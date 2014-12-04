@@ -25,7 +25,7 @@ return trim($_GET[$name]);
 
 public static function base_url()
 {
-if (!PHO_Util::is_web()) return '';
+if (!PHO_Util::env_is_web()) return '';
 
 if (!isset($_SERVER['PATH_INFO'])) return $_SERVER['PHP_SELF'];
 
