@@ -26,13 +26,6 @@
 */
 //============================================================================
 
-// <PHK:ignore>
-require_once(dirname(__FILE__).'/PHO_Options');
-require_once(dirname(__FILE__).'/PHO_Display');
-// <PHK:end>
-
-//----------------
-
 class PHO_Dummy_Options extends PHO_Options
 {
 
