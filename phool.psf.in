@@ -18,11 +18,9 @@
 
 # We don't compress the files to avoid a dependency to the zlib extension
 
-merge / $(1)
+add -C src .
 
-add /license.txt $(1)/../COPYING
-
-%options
+%options --syntax php
 
 return array(
 	'name' => 'phool',
@@ -34,7 +32,7 @@ return array(
 	'copyright' => '(C) Francois Laupretre <mailto:francois@tekwire.net>',
 	'url' => 'http://phool.tekwire.net',
 	'license' => 'GNU Lesser General Public License (LGPL) <http://www.gnu.org/licenses/>',
-	'license_prefix' => '/license',
+	'license_prefix' => '/etc/license',
 	); 
 
 #=============================================================================

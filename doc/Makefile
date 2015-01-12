@@ -1,63 +1,59 @@
 
-include ../config.mk
-
-TMP_DIR = /tmp/.mk.tmp
-
 SOURCE_DIR = ../src
+BUILD_DIR = ../build
 
-API_PHK = phool_api.phk
-API_PSF = api.psf
+CLASSES_DIR = ../src/classes
+PUBLIC_API_CLASSES = PHO_Display PHO_File PHO_Getopt PHO_HTTP PHO_IP PHO_JSON \
+	PHO_Modifiable PHO_Options PHO_Persistent PHO_Time PHO_Util PHO_VarContainer \
+	PHO_XPage
 
-XREF_PHK = phool_xref.phk
-XREF_PSF = xref.psf
-XREF_CFG = xref.cfg
-XREF_SCRIPT = ../build/xref.sh
-
-TARGETS = $(API_PHK) $(API_PDF) $(XREF_PHK)
-
-PHK_CREATOR = ../build/PHK_Creator.phk
-PHK_CREATE = $(PHP) $(PHK_CREATOR) build
-EXPAND = ../build/expand.sh
+TARGETS = api.phk api.pdf xref.phk
+EXTRA_CLEAN = api.psf xref.psf
 
 #------
 
-all: doc
+include ../make.vars
+include ../make.common
 
-doc: $(TARGETS)
+#------
 
-clean:
-	/bin/rm -f $(TARGETS) $(API_PSF) $(XREF_PSF)
+.PHONY: clean
 
-.PHONY: doc clean_doc clean all
+all: base
+
+clean: clean_base
 
 #------ API Documentation
+#-- Restrict API documentation to the public API
 
-$(API_PSF): $(API_PSF).in
-		chmod +x $(EXPAND)
-	SOFTWARE_VERSION=$(SOFWARE_VERSION) SOFTWARE_RELEASE=$(SOFTWARE_RELEASE) \
-	$(EXPAND) <$< >$@
-
-$(API_PHK): $(API_PSF)
-	/bin/rm -rf $(TMP_DIR); mkdir $(TMP_DIR)
-	$(PHPDOC) --template=clean --title "phool API" -d $(SOURCE_DIR) -t $(TMP_DIR)
-	cp ../COPYING $(TMP_DIR)/license.txt
-	$(PHK_CREATE) $@ $(API_PSF) $(TMP_DIR)
-	chmod +r $@
+api.phk: api.psf
+	/bin/rm -rf $(TMP_DIR)
+	mkdir -p $(TMP_DIR)/result $(TMP_DIR)/source
+	for i in $(PUBLIC_API_CLASSES) ; do cp $(CLASSES_DIR)/$$i.php \
+		$(TMP_DIR)/source ; done
+	$(PHPDOC) -o HTML:frames:DOM/earthli -ti "$(PRODUCT) API" \
+		-d $(TMP_DIR)/source -t $(TMP_DIR)/result
+	$(PHK_BUILD) $@ -d SOURCE=$(TMP_DIR)/result
 	/bin/rm -rf $(TMP_DIR)
 
-#------ Cross Reference
+#-- PDF
 
-$(XREF_PSF): $(XREF_PSF).in
-	chmod +x $(EXPAND)
-	SOFTWARE_VERSION=$(SOFWARE_VERSION) SOFTWARE_RELEASE=$(SOFTWARE_RELEASE) \
-		$(EXPAND) <$< >$@
+api.pdf: api.psf
+	/bin/rm -rf $(TMP_DIR)
+	mkdir -p $(TMP_DIR)/result $(TMP_DIR)/source
+	for i in $(PUBLIC_API_CLASSES) ; do cp $(CLASSES_DIR)/$$i.php \
+		$(TMP_DIR)/source ; done
+	$(PHPDOC) -o PDF:default:default -ti "$(PRODUCT) API" \
+		-d $(TMP_DIR)/source -t $(TMP_DIR)/result
+	mv $(TMP_DIR)/result/documentation.pdf $@
+	/bin/rm -rf $(TMP_DIR)
 
-$(XREF_PHK): $(XREF_PSF)
-	/bin/rm -rf $(TMP_DIR); mkdir $(TMP_DIR)
-	chmod +x $(XREF_SCRIPT)
-	PHPXREF="$(PHPXREF)" INPUT="$(SOURCE_DIR)" OUTPUT="$(TMP_DIR)" \
-			$(XREF_SCRIPT) $(XREF_CFG)
-	cp ../COPYING $(TMP_DIR)/license.txt
-	$(PHK_CREATE) $@ $(XREF_PSF) $(TMP_DIR)
-	chmod +r $@
+#-- Cross Reference
+
+xref.phk: xref.psf
+	/bin/rm -rf $(TMP_DIR)
+	mkdir $(TMP_DIR)
+	PHPXREF_DIR="$(PHPXREF_DIR)" INPUT="$(SOURCE_DIR)" OUTPUT="$(TMP_DIR)" \
+			$(XREF) xref.cfg
+	$(PHK_BUILD) $@ -d SOURCE=$(TMP_DIR)
 	/bin/rm -rf $(TMP_DIR)

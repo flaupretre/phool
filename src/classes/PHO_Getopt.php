@@ -143,7 +143,7 @@ class PHO_Getopt {
             /* Try to find the short option in the specifier string. */
             if (($spec = strstr($short_options, $opt)) === false || $arg{$i} == ':')
             {
-                throw new Exception("self: unrecognized option -- $opt");
+                throw new Exception(__CLASS__.": unrecognized option -- $opt");
             }
 
             if (strlen($spec) > 1 && $spec{1} == ':') {
@@ -163,7 +163,7 @@ class PHO_Getopt {
                     } else if (list(, $opt_arg) = each($args))
                         /* Else use the next argument. */;
                     else
-                        throw new Exception("Console_Getopt: option requires an argument -- $opt");
+                        throw new Exception(__CLASS__.": option requires an argument -- $opt");
                 }
             }
 
@@ -191,7 +191,7 @@ class PHO_Getopt {
             if ($opt_rest != '' && $opt{0} != '=' &&
                 $i + 1 < count($long_options) &&
                 $opt == substr($long_options[$i+1], 0, $opt_len)) {
-                throw new Exception("Console_Getopt: option --$opt is ambiguous");
+                throw new Exception(__CLASS__.": option --$opt is ambiguous");
             }
 
             if (substr($long_opt, -1) == '=') {
@@ -199,18 +199,18 @@ class PHO_Getopt {
                     /* Long option requires an argument.
                        Take the next argument if one wasn't specified. */;
                     if (!strlen($opt_arg) && !(list(, $opt_arg) = each($args))) {
-                        throw new Exception("Console_Getopt: option --$opt requires an argument");
+                        throw new Exception(__CLASS__.": option --$opt requires an argument");
                     }
                 }
             } else if ($opt_arg) {
-                throw new Exception("Console_Getopt: option --$opt doesn't allow an argument");
+                throw new Exception(__CLASS__.": option --$opt doesn't allow an argument");
             }
 
             $opts[] = array('--' . $opt, $opt_arg);
             return;
         }
 
-        throw new Exception("Console_Getopt: unrecognized option --$opt");
+        throw new Exception(__CLASS__.": unrecognized option --$opt");
     }
 
     /**
@@ -226,7 +226,7 @@ class PHO_Getopt {
         if (!is_array($argv)) {
             if (!@is_array($_SERVER['argv'])) {
                 if (!@is_array($GLOBALS['HTTP_SERVER_VARS']['argv'])) {
-                    throw new Exception("Console_Getopt: Could not read cmd args (register_argc_argv=Off?)");
+                    throw new Exception(__CLASS__.": Could not read cmd args (register_argc_argv=Off?)");
                 }
                 return $GLOBALS['HTTP_SERVER_VARS']['argv'];
             }

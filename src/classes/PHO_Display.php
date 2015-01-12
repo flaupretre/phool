@@ -26,6 +26,11 @@
 
 class PHO_Display
 {
+const MAX_VERBOSE_LEVEL=2;	// Highest message level
+const MIN_VERBOSE_LEVEL=-3; // Lowest message level -1
+
+// Note: the minimal verbose level allows to hide every messages
+
 private static $prefix=array(
 	 2 => '>> ',			// Debug
 	 1 => '> ',				// Trace
@@ -51,7 +56,19 @@ private static $errors=array();
 
 public static function inc_verbose()
 {
-self::$verbose_level++;
+if (self::$verbose_level < self::MAX_VERBOSE_LEVEL) self::$verbose_level++;
+}
+
+//----------------------------------------------------------------------------
+/**
+* Decrement verbose level
+*
+* @return void
+*/
+
+public static function dec_verbose()
+{
+if (self::$verbose_level > self::MIN_VERBOSE_LEVEL) self::$verbose_level--;
 }
 
 //----------------------------------------------------------------------------

@@ -1,39 +1,65 @@
+#
+#==============================================================================
 
-include ./config.mk
+TARGETS = $(PRODUCT).phk
+SOURCE_DIR = src
+BUILD_DIR = build
+EXTRA_CLEAN = $(PRODUCT).psf $(PRODUCT)
 
-PHOOL_PHK = phool.phk
-PHOOL_PSF = phool.psf
+#-----------------------------
 
-TARGETS = $(PHOOL_PHK)
+include ./make.vars
+include ./make.common
 
-PHK_CREATOR = build/PHK_Creator.phk
-PHK_CREATE = $(PHP) $(PHK_CREATOR) build
-EXPAND = build/expand.sh
+#-----------------------------
 
-#------
+.PHONY: all clean_doc clean_distrib clean doc distrib test clean_test
 
-all:  $(TARGETS)
+all: base doc
 
-clean: clean_doc
-	/bin/rm -f $(TARGETS) $(PHOOL_PSF)
+clean: clean_base clean_doc clean_distrib
 
-#------
+#--- How to build the package
 
-.PHONY: all clean doc clean_doc
+$(PRODUCT).phk: $(PRODUCT).psf
+	$(PHK_BUILD) $@ -d SOURCE_DIR=$(SOURCE_DIR)
 
-$(PHOOL_PSF): $(PHOOL_PSF).in
-	chmod +x $(EXPAND)
-	SOFTWARE_VERSION=$(SOFTWARE_VERSION) SOFTWARE_RELEASE=$(SOFTWARE_RELEASE) \
-		$(EXPAND) <$< >$@
+#--- Tests
 
-$(PHOOL_PHK): $(PHOOL_PSF)
-	$(PHK_CREATE) $@ phool.psf ./src
+test mem_test: base
+	$(MAKE) -C test $@
 
-#------
+clean_test:
+	$(MAKE) -C test clean
 
-doc:
-	cd doc && $(MAKE)
+#--- Examples
+
+examples: base
+	$(MAKE) -C examples
+
+clean_examples:
+	$(MAKE) -C examples clean
+
+#--- Documentation
+
+doc: base
+	$(MAKE) -C doc
 
 clean_doc:
-	cd doc && $(MAKE) clean
+	$(MAKE) -C doc clean
 
+#--- How to build distrib
+# As we copy the whole examples and test subdirs into the distrib, we must
+# clean them first.
+
+distrib:  $(DISTRIB)
+
+$(DISTRIB): base doc clean_test clean_examples
+	BASE=$(PWD) TMP_DIR=$(TMP_DIR) PRODUCT=$(PRODUCT) \
+	SOFTWARE_VERSION=$(SOFTWARE_VERSION) \
+	SOFTWARE_RELEASE=$(SOFTWARE_RELEASE) $(MK_DISTRIB)
+
+clean_distrib:
+	/bin/rm -f $(DISTRIB)
+
+#-----------------------------------------------------------------------------
