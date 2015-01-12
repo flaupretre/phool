@@ -1,64 +1,59 @@
 
-include ../config.mk
-
-PRODUCT = phool
-TMP_DIR = /tmp/.mk.tmp
 SOURCE_DIR = ../src
+BUILD_DIR = ../build
 
-TARGETS = api.phk xref.phk
-TO_CLEAN = $(TARGETS) api.pdf api.psf xref.psf
+CLASSES_DIR = ../src/classes
+PUBLIC_API_CLASSES = PHO_Display PHO_File PHO_Getopt PHO_HTTP PHO_IP PHO_JSON \
+	PHO_Modifiable PHO_Options PHO_Persistent PHO_Time PHO_Util PHO_VarContainer \
+	PHO_XPage
 
-PHK_CREATOR = ../build/PHK_Creator.phk
-PHK_CREATE = $(PHP) $(PHK_CREATOR) build
-EXPAND = ../build/expand.sh
-XREF_SCRIPT = ../build/xref.sh
+TARGETS = api.phk api.pdf xref.phk
+EXTRA_CLEAN = api.psf xref.psf
+
+#------
+
+include ../make.vars
+include ../make.common
 
 #------
 
 .PHONY: clean
 
-all: $(TARGETS)
+all: base
 
-clean:
-	/bin/rm -f $(TO_CLEAN)
-
-%.psf: %.psf.in
-	chmod +x $(EXPAND)
-	SOFTWARE_VERSION=$(SOFTWARE_VERSION) SOFTWARE_RELEASE=$(SOFTWARE_RELEASE) \
-		$(EXPAND) <$< >$@
+clean: clean_base
 
 #------ API Documentation
+#-- Restrict API documentation to the public API
 
 api.phk: api.psf
 	/bin/rm -rf $(TMP_DIR)
-	mkdir $(TMP_DIR)
-	$(PHPDOC) --help | head -1 | grep 'version 2' >/dev/null ;\
-	if [ $$? = 0 ] ; then opts='-q --title $(PRODUCT)' ;\
-	else opts='-o HTML:frames:DOM/earthli -ti $(PRODUCT)' ; fi;\
-	$(PHPDOC) $$opts -d $(SOURCE_DIR) -t $(TMP_DIR) 
-	$(PHK_CREATE) $@ $< $(TMP_DIR)
-	chmod +r $@
+	mkdir -p $(TMP_DIR)/result $(TMP_DIR)/source
+	for i in $(PUBLIC_API_CLASSES) ; do cp $(CLASSES_DIR)/$$i.php \
+		$(TMP_DIR)/source ; done
+	$(PHPDOC) -o HTML:frames:DOM/earthli -ti "$(PRODUCT) API" \
+		-d $(TMP_DIR)/source -t $(TMP_DIR)/result
+	$(PHK_BUILD) $@ -d SOURCE=$(TMP_DIR)/result
 	/bin/rm -rf $(TMP_DIR)
 
-# Generating a PDF documentation is available in phpdoc V 1 only
+#-- PDF
 
 api.pdf: api.psf
 	/bin/rm -rf $(TMP_DIR)
-	mkdir $(TMP_DIR)
-	$(PHPDOC) -o PDF:default:default -d $(SOURCE_DIR) \
-		-t $(TMP_DIR) -ti "$(PRODUCT) API"
-	mv $(TMP_DIR)/documentation.pdf $@
-	chmod +r $@
+	mkdir -p $(TMP_DIR)/result $(TMP_DIR)/source
+	for i in $(PUBLIC_API_CLASSES) ; do cp $(CLASSES_DIR)/$$i.php \
+		$(TMP_DIR)/source ; done
+	$(PHPDOC) -o PDF:default:default -ti "$(PRODUCT) API" \
+		-d $(TMP_DIR)/source -t $(TMP_DIR)/result
+	mv $(TMP_DIR)/result/documentation.pdf $@
 	/bin/rm -rf $(TMP_DIR)
 
-#------ Cross Reference
+#-- Cross Reference
 
 xref.phk: xref.psf
 	/bin/rm -rf $(TMP_DIR)
 	mkdir $(TMP_DIR)
-	chmod +x $(XREF_SCRIPT)
 	PHPXREF_DIR="$(PHPXREF_DIR)" INPUT="$(SOURCE_DIR)" OUTPUT="$(TMP_DIR)" \
-			$(XREF_SCRIPT) xref.cfg
-	$(PHK_CREATE) $@ $< $(TMP_DIR)
-	chmod +r $@
+			$(XREF) xref.cfg
+	$(PHK_BUILD) $@ -d SOURCE=$(TMP_DIR)
 	/bin/rm -rf $(TMP_DIR)
