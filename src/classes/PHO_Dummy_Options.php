@@ -61,6 +61,7 @@ switch($opt)
 	case 'm':
 		$this->$options['dummy_opt']=$arg;
 		break;
+	}
 }
 
 //---------
