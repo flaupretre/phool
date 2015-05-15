@@ -189,6 +189,27 @@ if ($inode==0) // This system does not support inodes
 return sprintf('%s_%X_%X_%X',$prefix,$dev,$inode,$mtime);
 }
 
+//---------------------------------
+
+public static function recursive_copy($src,$dst)
+{
+if (is_dir($src))
+	{
+    $dir = opendir($src);
+    @mkdir($dst);
+    while(($entry=readdir($dir))!==false)
+		{
+		if (($entry==='.')||($entry==='..')) continue;
+		self::recursive_copy($src.'/'.$entry,$dst.'/'.$entry);
+		}
+	closedir($dir);
+	}
+else
+	{
+	copy($src,$dst);
+	}
+}
+
 //----------
 } // End of class
 //=============================================================================
