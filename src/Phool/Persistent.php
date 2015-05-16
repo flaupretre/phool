@@ -13,11 +13,16 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //============================================================================
+//=============================================================================
 /**
-* @author Francois Laupretre <francois@tekwire.net>
-* @license http://www.gnu.org/licenses GNU Lesser General Public License, V 3.0
+* @copyright Francois Laupretre <phool@tekwire.net>
+* @license http://www.apache.org/licenses/LICENSE-2.0 Apache License, V 2.0
+* @category phool
+* @package phool
 */
 //============================================================================
+
+namespace Phool;
 
 //============================================================================
 /**
@@ -41,7 +46,7 @@
 
 //----------------------------------------------------------------------------
 
-abstract class PHO_Persistent extends PHO_Modifiable
+abstract class Persistent extends Modifiable
 {
 // @var string The magic string to write and check
 
@@ -112,15 +117,15 @@ $this->path=$path;
 
 public function load($path)
 {
-if (!file_exists($path)) throw new Exception("$path: File does not exist");
+if (!file_exists($path)) throw new \Exception("$path: File does not exist");
 
 try
 	{
 	$buf=file_get_contents($path);
-	if ($buf===false) throw new Exception("$path: Cannot get file contents");
+	if ($buf===false) throw new \Exception("$path: Cannot get file contents");
 	//-- Check magic
 	if (substr($buf,0,strlen($this->magic))!==$this->magic)
-		throw new Exception("Bad magic string");
+		throw new \Exception("Bad magic string");
 	//-- Skip magic string
 	$buf=substr($buf,strlen($this->magic));
 	//-- Unserialize toplevel array
@@ -128,17 +133,17 @@ try
 	if ((!is_array($a))
 		||(!array_key_exists('crc',$a))
 		||(!array_key_exists('data',$a)))
-		throw new Exception('Invalid format');
+		throw new \Exception('Invalid format');
 
 	$data=$a['data'];
 	if (crc32($data) !== $a['crc'])
-		throw new Exception('Wrong checksum');
+		throw new \Exception('Wrong checksum');
 
 	$this->unserialize($data);
 	}
-catch (Exception $e)
+catch (\Exception $e)
 	{
-	throw new Exception("$path: Cannot load file: ".$e->getMessage());
+	throw new \Exception("$path: Cannot load file: ".$e->getMessage());
 	}
 
 $this->set_path($path);
@@ -158,7 +163,7 @@ public function save($path=null)
 if (is_null($path))
 	{
 	if (is_null($this->path))
-		throw new Exception('Save path cannot be determined');
+		throw new \Exception('Save path cannot be determined');
 	$path=$this->path;
 	}
 
@@ -169,7 +174,7 @@ $data=serialize(array(
 	));
 
 if (file_put_contents($path,$this->magic.$data)===false)
-	throw new Exception("$path: Cannot write file");
+	throw new \Exception("$path: Cannot write file");
 
 //-- Write is OK. Now we can clear the 'modified' flag
 
@@ -190,5 +195,5 @@ public function save_if_modified($path=null)
 if ($this->modified()) $this->save($path);
 }
 
-} // End of class PHO_Persistent
+} // End of class
 ?>

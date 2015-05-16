@@ -14,10 +14,14 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //============================================================================
 /**
-* @author Francois Laupretre <francois@tekwire.net>
-* @license http://www.gnu.org/licenses GNU Lesser General Public License, V 3.0
+* @copyright Francois Laupretre <phool@tekwire.net>
+* @license http://www.apache.org/licenses/LICENSE-2.0 Apache License, V 2.0
+* @category phool
+* @package phool
 */
 //============================================================================
+
+namespace Phool;
 
 //============================================================================
 /**
@@ -34,7 +38,7 @@
 * When the instance is created, the state is set to 'not-modified'
 */
 
-abstract class PHO_Modifiable
+abstract class Modifiable
 {
 /** @var boolean True if the object was modified since creation/load/save */
 
@@ -94,5 +98,5 @@ return $this->modified_flag;
 }
 
 //----------------------------------------------------------------------------
-} // End of class PHO_Modifiable
+} // End of class
 ?>

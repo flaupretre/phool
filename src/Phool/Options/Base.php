@@ -1,24 +1,19 @@
 <?php
-//=============================================================================
+//============================================================================
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Lesser General Public License (LGPL) as
+// published by the Free Software Foundation, either version 3 of the License,
+// or (at your option) any later version.
 //
-// Copyright Francois Laupretre <automap@tekwire.net>
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Lesser General Public License for more details.
 //
-//   Licensed under the Apache License, Version 2.0 (the "License");
-//   you may not use this file except in compliance with the License.
-//   You may obtain a copy of the License at
-//
-//       http://www.apache.org/licenses/LICENSE-2.0
-//
-//   Unless required by applicable law or agreed to in writing, software
-//   distributed under the License is distributed on an "AS IS" BASIS,
-//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//   See the License for the specific language governing permissions and
-//   limitations under the License.
-//
-//=============================================================================
+// You should have received a copy of the GNU Lesser General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//============================================================================
 /**
-* This class manages command line options. It is a wrapper above PHO_Getopt
-*
 * @copyright Francois Laupretre <phool@tekwire.net>
 * @license http://www.apache.org/licenses/LICENSE-2.0 Apache License, V 2.0
 * @category phool
@@ -26,9 +21,16 @@
 */
 //============================================================================
 
-abstract class PHO_Options
+namespace Phool\Options;
+
+//=============================================================================
+/**
+* This class manages command line options. It is a wrapper above Getopt
+*/
+
+abstract class Base
 {
-// These properties must be declared in the child class (see PHO_Dummy_Options)
+// These properties must be declared in the child class (see 'Dummy' class)
 
 // protected $opt_modifiers; /* Modifier args */
 // protected $options;	/* Option values */
@@ -47,7 +49,7 @@ return $this->options;
 public function option($opt)
 {
 if (!array_key_exists($opt,$this->options))
-	throw new Exception("$opt: Unknown option");
+	throw new \Exception("$opt: Unknown option");
 return $this->options[$opt];
 }
 
@@ -56,7 +58,7 @@ return $this->options[$opt];
 public function set($opt,$value)
 {
 if (!array_key_exists($opt,$this->options))
-	throw new Exception("$opt: Unknown option");
+	throw new \Exception("$opt: Unknown option");
 $this->options=$value;
 }
 
@@ -78,7 +80,7 @@ foreach($this->opt_modifiers as $mod)
 	$long_opts[]=$long;
 	}
 
-list($opts,$args2)=PHO_Getopt::getopt2($args,$short_opts,$long_opts);
+list($opts,$args2)=Getopt::getopt2($args,$short_opts,$long_opts);
 foreach($opts as $opt_val)
 	{
 	list($opt,$arg)=$opt_val;

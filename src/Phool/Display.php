@@ -14,17 +14,21 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //============================================================================
 /**
-* @copyright Francois Laupretre <francois@tekwire.net>
-* @license http://www.gnu.org/licenses GNU Lesser General Public License, V 3.0
+* @copyright Francois Laupretre <phool@tekwire.net>
+* @license http://www.apache.org/licenses/LICENSE-2.0 Apache License, V 2.0
+* @category phool
+* @package phool
 */
 //============================================================================
+
+namespace Phool;
 
 //============================================================================
 /**
 * Static functions used to display messages (normal, trace, debug...)
 */
 
-class PHO_Display
+class Display
 {
 const MAX_VERBOSE_LEVEL=2;	// Highest message level
 const MIN_VERBOSE_LEVEL=-3; // Lowest message level -1
@@ -246,7 +250,7 @@ return ob_get_clean();
 
 public static function show_trace()
 {
-$e=new Exception();
+$e=new \Exception();
 print_r($e->getTrace());
 }
 
@@ -277,5 +281,5 @@ return $var ? 'Yes' : 'No';
 }
 
 //----------------------------------------------------------------------------
-} // End of class PHO_Display
+} // End of class Display
 ?>

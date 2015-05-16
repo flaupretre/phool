@@ -1,15 +1,37 @@
 <?php
-//----------------------------------------------------------------------------
+//============================================================================
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Lesser General Public License (LGPL) as
+// published by the Free Software Foundation, either version 3 of the License,
+// or (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//============================================================================
 /**
-* @package Phool
+* @copyright Francois Laupretre <phool@tekwire.net>
+* @license http://www.apache.org/licenses/LICENSE-2.0 Apache License, V 2.0
+* @category phool
+* @package phool
 */
-//----------------------------------------------------------------------------
-/**
-* @package Phool
-*/
+//============================================================================
 
-class PHO_File
+namespace Phool;
+
+class File
 {
+
+//----
+
+public static function file_suffix($filename)
+{
+return self::suffix($filename);
+}
 
 //----
 
@@ -105,7 +127,7 @@ return self::trailing_separ($path,$separ);
 public static function readfile($path)
 {
 if (($data=@file_get_contents($path))===false)
-	throw new Exception($path.': Cannot get file content');
+	throw new \Exception($path.': Cannot get file content');
 return $data;
 }
 
@@ -115,7 +137,7 @@ return $data;
 public static function scandir($path)
 {
 if (($subnames=scandir($path))===false)
-	throw new Exception($path.': Cannot read directory');
+	throw new \Exception($path.': Cannot read directory');
 
 $a=array();
 foreach($subnames as $f)
@@ -131,16 +153,16 @@ public static function atomic_write($path,$data)
 $tmpf=tempnam(dirname($path),'tmp_');
 
 if (file_put_contents($tmpf,$data)!=strlen($data))
-	throw new Exception($tmpf.": Cannot write");
+	throw new \Exception($tmpf.": Cannot write");
 
 // Windows does not support renaming to an existing file (looses atomicity)
 
-if (PHO_Util::env_is_windows()) @unlink($path);
+if (Util::env_is_windows()) @unlink($path);
 
 if (!rename($tmpf,$path))
 	{
 	unlink($tmpf);
-	throw new Exception($path,'Cannot replace file');
+	throw new \Exception($path,'Cannot replace file');
 	}
 }
 
@@ -166,7 +188,7 @@ private static $simul_inode_index=1;
 
 public static function path_unique_id($prefix,$path,&$mtime)
 {
-if (($s=stat($path))===false) throw new Exception("$path: File not found");
+if (($s=stat($path))===false) throw new \Exception("$path: File not found");
 
 $dev=$s[0];
 $inode=$s[1];
@@ -175,7 +197,7 @@ $mtime=$s[9];
 if ($inode==0) // This system does not support inodes
 	{
 	$rpath=realpath($path);
-	if ($rpath === false) throw new Exception("$path: Cannot compute realpath");
+	if ($rpath === false) throw new \Exception("$path: Cannot compute realpath");
 
 	if (isset(self::$simul_inode_array[$rpath]))
 		$inode=self::$simul_inode_array[$rpath];

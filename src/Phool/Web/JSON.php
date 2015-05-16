@@ -1,6 +1,9 @@
 <?php
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
+/**
+* @category phool
+* @package phool
+*/
+//============================================================================
 /**
 * This file is adapted from the PEAR Services_JSON package version 1.0.3,
 * available at http://pear.php.net/package/Services_JSON.
@@ -10,6 +13,9 @@
 *		- make independant from PEAR error handling using exceptions . Also
 *		  remove SERVICES_JSON_SUPPRESS_ERRORS flag (replace with a try/catch
 *		  construct)
+*/
+
+namespace Phool\Web;
 
 /**
  * Converts to and from JSON format.
@@ -70,32 +76,32 @@
 /**
  * Marker constant for Services_JSON::decode(), used to flag stack state
  */
-define('SERVICES_JSON_SLICE',   1);
+const SERVICES_JSON_SLICE=1;
 
 /**
  * Marker constant for Services_JSON::decode(), used to flag stack state
  */
-define('SERVICES_JSON_IN_STR',  2);
+const SERVICES_JSON_IN_STR=2;
 
 /**
  * Marker constant for Services_JSON::decode(), used to flag stack state
  */
-define('SERVICES_JSON_IN_ARR',  3);
+const SERVICES_JSON_IN_ARR=3;
 
 /**
  * Marker constant for Services_JSON::decode(), used to flag stack state
  */
-define('SERVICES_JSON_IN_OBJ',  4);
+const SERVICES_JSON_IN_OBJ=4;
 
 /**
  * Marker constant for Services_JSON::decode(), used to flag stack state
  */
-define('SERVICES_JSON_IN_CMT', 5);
+const SERVICES_JSON_IN_CMT=5;
 
 /**
  * Behavior switch for Services_JSON::decode()
  */
-define('SERVICES_JSON_LOOSE_TYPE', 16);
+const SERVICES_JSON_LOOSE_TYPE=16;
 
 /**
  * Converts to and from JSON format.
@@ -104,7 +110,7 @@ define('SERVICES_JSON_LOOSE_TYPE', 16);
  *
  * <code>
  * // create a new instance of Services_JSON
- * $json = new Services_JSON();
+ * $json = new \Phool\Web\Services_JSON();
  *
  * // convert a complexe value to JSON notation, and send it to the browser
  * $value = array('foo', 'bar', array(1, 2, 'baz'), array(3, array(4)));
@@ -399,7 +405,7 @@ class Services_JSON
                 return '{' . join(',', $properties) . '}';
 
             default:
-                 throw new Exception(gettype($var)." can not be encoded as JSON string");
+                 throw new \Exception(gettype($var)." can not be encoded as JSON string");
         }
     }
 
@@ -591,7 +597,7 @@ class Services_JSON
                             $obj = array();
                         } else {
                             $stk = array(SERVICES_JSON_IN_OBJ);
-                            $obj = new stdClass();
+                            $obj = new \stdClass();
                         }
                     }
 

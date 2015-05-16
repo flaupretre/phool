@@ -1,14 +1,17 @@
 <?php
-//----------------------------------------------------------------------------
+//=============================================================================
 /**
-* @package Phool
+* @copyright Francois Laupretre <phool@tekwire.net>
+* @license http://www.apache.org/licenses/LICENSE-2.0 Apache License, V 2.0
+* @category phool
+* @package phool
 */
+//============================================================================
 //----------------------------------------------------------------------------
-/**
-* @package Phool
-*/
 
-class PHO_Time
+namespace Phool;
+
+class Time
 {
 
 //---------
@@ -26,7 +29,7 @@ return @strftime('%d-%b-%Y %H:%M %z',$time);
 
 public function compound_string($t='now',$tz)
 {
-$d=new DateTime($t,new DateTimeZone($tz));
+$d=new \DateTime($t,new DateTimeZone($tz));
 return $d->format('d-M-Y H:i:s (U)');
 }
 

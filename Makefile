@@ -2,7 +2,6 @@
 #==============================================================================
 
 TARGETS = $(PRODUCT).phk
-SOURCE_DIR = src
 BUILD_DIR = build
 EXTRA_CLEAN = $(PRODUCT).psf $(PRODUCT)
 
@@ -22,7 +21,7 @@ clean: clean_base clean_doc clean_distrib
 #--- How to build the package
 
 $(PRODUCT).phk: $(PRODUCT).psf
-	$(PHK_BUILD) $@ -d SOURCE_DIR=$(SOURCE_DIR)
+	$(PHK_BUILD) $@
 
 #--- Tests
 
