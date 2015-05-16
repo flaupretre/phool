@@ -24,9 +24,10 @@
 * @category phool
 * @package phool
 */
+// <Automap>:ignore-file
 //============================================================================
 
-class PHO_Dummy_Options extends PHO_Options
+class Dummy_Options extends \Phool\Options\Base
 {
 
 // Short/long modifier args
@@ -51,11 +52,11 @@ protected function process_option($opt,$arg)
 switch($opt)
 	{
 	case 'v':
-		PHO_Display::inc_verbose();
+		\Phool\Display::inc_verbose();
 		break;
 
 	case 'q':
-		PHO_Display::dec_verbose();
+		\Phool\Display::dec_verbose();
 		break;
 
 	case 'm':

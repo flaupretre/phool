@@ -1,14 +1,29 @@
 <?php
-//----------------------------------------------------------------------------
+//============================================================================
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Lesser General Public License (LGPL) as
+// published by the Free Software Foundation, either version 3 of the License,
+// or (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//============================================================================
 /**
-* @package Phool
+* @copyright Francois Laupretre <phool@tekwire.net>
+* @license http://www.apache.org/licenses/LICENSE-2.0 Apache License, V 2.0
+* @category phool
+* @package phool
 */
-//----------------------------------------------------------------------------
-/**
-* @package Phool
-*/
+//============================================================================
 
-class PHO_HTTP
+namespace Phool\Web;
+
+class HTTP
 {
 
 //---------
@@ -16,7 +31,7 @@ class PHO_HTTP
 public static function get_arg($name)
 {
 if (!array_key_exists($name,$_GET))
-	throw new Exception("$name: GET argument missing");
+	throw new \Exception("$name: GET argument missing");
 return trim($_GET[$name]);
 }
 
@@ -25,7 +40,7 @@ return trim($_GET[$name]);
 
 public static function base_url()
 {
-if (!PHO_Util::env_is_web()) return '';
+if (!\Phool\Util::env_is_web()) return '';
 
 if (!isset($_SERVER['PATH_INFO'])) return $_SERVER['PHP_SELF'];
 

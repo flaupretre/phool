@@ -1,20 +1,38 @@
 <?php
+//============================================================================
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Lesser General Public License (LGPL) as
+// published by the Free Software Foundation, either version 3 of the License,
+// or (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//============================================================================
+/**
+* @copyright Francois Laupretre <phool@tekwire.net>
+* @license http://www.apache.org/licenses/LICENSE-2.0 Apache License, V 2.0
+* @category phool
+* @package phool
+*/
+//============================================================================
 //----------------------------------------------------------------------------
 /**
 * This class allows to browse an XML or XHTML document
-*
-* @package XPage
 */
 //----------------------------------------------------------------------------
 
 //error_reporting(E_ERROR | E_CORE_ERROR | E_USER_ERROR);
 
 //----------------------------------------------------------------------------
-/**
-* @package XPage
-*/
 
-class PHO_XPage
+namespace Phool\XML;
+
+class XPage
 {
 
 /** @var string Buffer containing the document
@@ -37,11 +55,11 @@ public $xdoc=null;
 public function __construct($data,$html=true)
 {
 $this->page=$data;
-$this->xdoc=new DOMDocument;
+$this->xdoc=new \DOMDocument;
 
 $method=($html ? 'loadHTML' : 'loadXML');
 if (!@$this->xdoc->$method($data))
-	throw new DOMException('Cannot load data');
+	throw new \DOMException('Cannot load data');
 }
 
 #--------
@@ -56,7 +74,7 @@ if (!@$this->xdoc->$method($data))
 
 public function nodes($xpath,$base=null)
 {
-$xp=new DOMXPath($this->xdoc);
+$xp=new \DOMXPath($this->xdoc);
 if (is_null($base)) $base=$this->xdoc->documentElement;
 $n=$xp->query($xpath,$base);
 unset($xp);
@@ -161,10 +179,10 @@ return $this->nodes($xpath,$base)->length;
 public static function a_info($node)
 {
 if ((! $node instanceof DOMElement))
-	throw new Exception('Arg should be a DOMElement');
+	throw new \Exception('Arg should be a DOMElement');
 
 if ($node->tagName != 'a')
-	throw new Exception('Node should be an anchor ('.$node->tagName.')');
+	throw new \Exception('Node should be an anchor ('.$node->tagName.')');
 
 return array('text' => $node->textContent
 	,'url' => $node->attributes->getNamedItem('href')->nodeValue);

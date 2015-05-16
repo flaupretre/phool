@@ -1,14 +1,16 @@
 <?php
-//----------------------------------------------------------------------------
+//=============================================================================
 /**
-* @package Phool
+* @copyright Francois Laupretre <phool@tekwire.net>
+* @license http://www.apache.org/licenses/LICENSE-2.0 Apache License, V 2.0
+* @category phool
+* @package phool
 */
-//----------------------------------------------------------------------------
-/**
-* @package Phool
-*/
+//============================================================================
 
-class PHO_Util
+namespace Phool;
+
+class Util
 {
 
 //---------
@@ -37,7 +39,7 @@ else $suffix = PHP_SHLIB_SUFFIX;
 
 @dl('php_'.$ext.'.'.$suffix) || @dl($ext.'.'.$suffix);
 
-if (!extension_loaded($ext)) throw new Exception("$ext: Cannot load extension");
+if (!extension_loaded($ext)) throw new \Exception("$ext: Cannot load extension");
 }
 
 //---------
@@ -50,10 +52,10 @@ $failed_ext=array();
 foreach($ext_list as $ext)
 	{
 	try { self::load_extension($ext); }
-	catch (Exception $e) { $failed_ext[]=$ext; }
+	catch (\Exception $e) { $failed_ext[]=$ext; }
 	}
 if (count($failed_ext))
-	throw new Exception('Cannot load the following required extension(s): '
+	throw new \Exception('Cannot load the following required extension(s): '
 		.implode(' ',$failed_ext));
 }
 
