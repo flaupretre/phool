@@ -28,7 +28,7 @@ class File
 
 //----
 
-public static function file_suffix($filename)
+public static function suffix($filename)
 {
 return self::suffix($filename);
 }
