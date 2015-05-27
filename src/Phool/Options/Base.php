@@ -35,7 +35,7 @@ abstract class Base
 // protected $opt_modifiers; /* Modifier args */
 // protected $options;	/* Option values */
 
-abstract protected function process_option($opt,$arg);
+abstract protected function processOption($opt,$arg);
 
 //-----------------------
 
@@ -96,7 +96,7 @@ foreach($opts as $opt_val)
 				}
 			}
 		}
-	$this->process_option($opt,$arg);
+	$this->processOption($opt,$arg);
 	}
 
 $args=$args2;
@@ -104,7 +104,7 @@ $args=$args2;
 
 //-----------------------
 
-public function parse_all(&$args)
+public function parseAll(&$args)
 {
 $res=array();
 

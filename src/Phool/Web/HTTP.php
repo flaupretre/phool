@@ -28,7 +28,7 @@ class HTTP
 
 //---------
 
-public static function get_arg($name)
+public static function getArg($name)
 {
 if (!array_key_exists($name,$_GET))
 	throw new \Exception("$name: GET argument missing");
@@ -38,9 +38,9 @@ return trim($_GET[$name]);
 //---------
 // Compute the base URL we were called with
 
-public static function base_url()
+public static function baseUrl()
 {
-if (!\Phool\Util::env_is_web()) return '';
+if (!\Phool\Util::envIsWeb()) return '';
 
 if (!isset($_SERVER['PATH_INFO'])) return $_SERVER['PHP_SELF'];
 
@@ -62,9 +62,9 @@ return $phpself;
 //---------------------------------
 // Sends an HTTP 301 redirection
 
-public static function http_301_redirect($path)
+public static function http301Redirect($path)
 {
-header('Location: http://'.$_SERVER['HTTP_HOST'].self::http_base_url().$path);
+header('Location: http://'.$_SERVER['HTTP_HOST'].self::http_baseUrl().$path);
 header('HTTP/1.1 301 Moved Permanently');
 exit(0);
 }
@@ -72,7 +72,7 @@ exit(0);
 //---------------------------------
 // Sends an HTTP 400 failure
 
-public static function http_400_fail($msg='')
+public static function http400Fail($msg='')
 {
 if ($msg!='') $msg=' - '.$msg;
 header("HTTP/1.0 400 Bad Request".$msg);
@@ -82,7 +82,7 @@ exit(1);
 //---------------------------------
 // Sends an HTTP 403 failure
 
-public static function http_403_fail($msg='')
+public static function http403Fail($msg='')
 {
 if ($msg!='') $msg=' - '.$msg;
 header("HTTP/1.0 403 Forbidden".$msg);
@@ -92,7 +92,7 @@ exit(1);
 //---------------------------------
 // Sends an HTTP 404 failure
 
-public static function http_404_fail($msg='')
+public static function http404Fail($msg='')
 {
 if ($msg!='') $msg=' - '.$msg;
 header("HTTP/1.0 404 Not Found".$msg);
@@ -102,7 +102,7 @@ exit(1);
 //---------------------------------
 // Sends a mime header
 
-public static function mime_header($type)
+public static function mimeHeader($type)
 {
 header("Content-type: $type");
 }

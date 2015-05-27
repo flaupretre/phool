@@ -18,9 +18,7 @@
 
 # We don't compress the files to avoid a dependency to the zlib extension
 
-add -C src/Phool -t src .
-
-add etc
+add src etc
 
 %options --syntax php
 

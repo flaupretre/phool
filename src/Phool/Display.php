@@ -58,7 +58,7 @@ private static $errors=array();
 * @return void
 */
 
-public static function inc_verbose()
+public static function incVerbose()
 {
 if (self::$verbose_level < self::MAX_VERBOSE_LEVEL) self::$verbose_level++;
 }
@@ -70,7 +70,7 @@ if (self::$verbose_level < self::MAX_VERBOSE_LEVEL) self::$verbose_level++;
 * @return void
 */
 
-public static function dec_verbose()
+public static function decVerbose()
 {
 if (self::$verbose_level > self::MIN_VERBOSE_LEVEL) self::$verbose_level--;
 }
@@ -83,7 +83,7 @@ if (self::$verbose_level > self::MIN_VERBOSE_LEVEL) self::$verbose_level--;
 * @return void
 */
 
-public static function set_verbose($level)
+public static function setVerbose($level)
 {
 self::$verbose_level=$level;
 }
@@ -143,7 +143,7 @@ self::_display($msg,-1);
 * @return int
 */
 
-public static function error_count()
+public static function errorCount()
 {
 return count(self::$errors);
 
@@ -156,7 +156,7 @@ return count(self::$errors);
 * @return array
 */
 
-public static function get_errors()
+public static function getErrors()
 {
 return self::$errors;
 }
@@ -221,7 +221,7 @@ self::_display($msg,2);
 * @return string The string to display
 */
 
-public static function bool_str($val)
+public static function boolStr($val)
 {
 return ($val ? 'yes' : 'no');
 }
@@ -248,7 +248,7 @@ return ob_get_clean();
 * @return void
 */
 
-public static function show_trace()
+public static function showTrace()
 {
 $e=new \Exception();
 print_r($e->getTrace());
@@ -262,7 +262,7 @@ print_r($e->getTrace());
 * @return string
 */
 
-public static function var_type($var)
+public static function varType($var)
 {
 return is_object($var) ? 'object '.get_class($var) : gettype($var);
 }

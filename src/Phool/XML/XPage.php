@@ -107,7 +107,7 @@ return ($node_list->length ? $node_list->item(0) : null);
 * @returns DOMNode|null null if no match
 */
 
-public function last_node($xpath,$base=null)
+public function lastNode($xpath,$base=null)
 {
 $node_list=$this->nodes($xpath,$base);
 return ($node_list->length ? $node_list->item($node_list->length-1) : null);
@@ -176,7 +176,7 @@ return $this->nodes($xpath,$base)->length;
 * @throws Exception
 */
 
-public static function a_info($node)
+public static function aInfo($node)
 {
 if ((! $node instanceof DOMElement))
 	throw new \Exception('Arg should be a DOMElement');
@@ -190,7 +190,7 @@ return array('text' => $node->textContent
 
 #--------
 
-public function recursive_back_nodes($start_node,$item)
+public function recursiveBackNodes($start_node,$item)
 {
 $a=array();
 $node=$start_node;
@@ -210,27 +210,27 @@ return $a;
 
 #--------
 
-public function recursive_back_node($start_node,$item)
+public function recursiveBackNode($start_node,$item)
 {
-$nodes=$this->recursive_back_nodes($start_node,$item);
+$nodes=$this->recursiveBackNodes($start_node,$item);
 return ((count($nodes)==0) ? null : $nodes[0]);
 }
 
 #--------
 
-public function recursive_back_values($start_node,$item)
+public function recursiveBackValues($start_node,$item)
 {
 $a=array();
-foreach ($this->recursive_back_nodes($start_node,$item) as $node)
+foreach ($this->recursiveBackNodes($start_node,$item) as $node)
 	$a[]=$node->nodeValue;
 return $a;
 }
 
 #--------
 
-public function recursive_back_value($start_node,$item)
+public function recursiveBackValue($start_node,$item)
 {
-$node=$this->recursive_back_node($start_node,$item);
+$node=$this->recursiveBackNode($start_node,$item);
 return (is_null($node) ? null : $node->nodeValue);
 }
 
