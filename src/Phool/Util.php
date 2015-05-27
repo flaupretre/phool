@@ -15,14 +15,14 @@ class Util
 
 //---------
 
-public static function env_is_web()
+public static function envIsWeb()
 {
 return (php_sapi_name()!='cli');
 }
 
 //----
 
-public static function env_is_windows()
+public static function envIsWindows()
 {
 return (substr(PHP_OS, 0, 3) == 'WIN');
 }
@@ -30,7 +30,7 @@ return (substr(PHP_OS, 0, 3) == 'WIN');
 //---------
 // Adapted from PEAR
 
-public static function load_extension($ext)
+public static function loadExtension($ext)
 {
 if (extension_loaded($ext)) return;
 
@@ -46,12 +46,12 @@ if (!extension_loaded($ext)) throw new \Exception("$ext: Cannot load extension")
 // Require several extensions. Allows to list every extensions that are not
 // present.
 
-public static function load_extensions($ext_list)
+public static function loadExtensions($ext_list)
 {
 $failed_ext=array();
 foreach($ext_list as $ext)
 	{
-	try { self::load_extension($ext); }
+	try { self::loadExtension($ext); }
 	catch (\Exception $e) { $failed_ext[]=$ext; }
 	}
 if (count($failed_ext))
@@ -79,7 +79,7 @@ private static $mqr_exists=null;
 private static $mqr_level=0;
 private static $mqr_save;
 
-public static function disable_mqr()
+public static function disableMQR()
 {
 if (is_null(self::$mqr_exists))
 	self::$mqr_exists=function_exists('set_magic_quotes_runtime');
@@ -97,7 +97,7 @@ self::$mqr_level++;
 //---------
 // This function must be called after every file access
 
-public static function restore_mqr()
+public static function restoreMQR()
 {
 if (is_null(self::$mqr_exists))
 	self::$mqr_exists=function_exists('set_magic_quotes_runtime');
@@ -110,7 +110,7 @@ if (self::$mqr_level==0) set_magic_quotes_runtime(self::$mqr_save);
 
 //---------
 
-public static function mk_array($data)
+public static function mkArray($data)
 {
 if (is_null($data)) return array();
 if (!is_array($data)) $data=array($data);
@@ -119,7 +119,7 @@ return $data;
 
 //---------------------------------
 
-public static function call_method($object,$method,$args)
+public static function callMethod($object,$method,$args)
 {
 return call_user_func_array(array($object,$method),$args);
 }

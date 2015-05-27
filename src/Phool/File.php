@@ -35,7 +35,7 @@ return self::suffix($filename);
 
 //----
 
-public static function file_suffix($filename)
+public static function fileSuffix($filename)
 {
 $dotpos=strrpos($filename,'.');
 if ($dotpos===false) return '';
@@ -60,16 +60,16 @@ return strtolower(substr($filename,$dotpos+1));
 * @return string The resulting path
 */
 
-public static function combine_path($base,$path,$separ=false)
+public static function combinePath($base,$path,$separ=false)
 {
-if (($base=='.') || ($base=='') || self::is_absolute_path($path))
+if (($base=='.') || ($base=='') || self::isAbsolutePath($path))
 	$res=$path;
 elseif (($path=='.') || is_null($path))
 	$res=$base;
 else	//-- Relative path : combine it to base
 	$res=rtrim($base,'/\\').'/'.$path;
 
-return self::trailing_separ($res,$separ);
+return self::trailingSepar($res,$separ);
 }
 
 //---------------------------------
@@ -81,7 +81,7 @@ return self::trailing_separ($res,$separ);
 * @return bool The result path
 */
 
-public static function trailing_separ($path, $separ)
+public static function trailingSepar($path, $separ)
 {
 $path=rtrim($path,'/\\');
 if ($path=='') return '/';
@@ -97,7 +97,7 @@ return $path;
 * @return bool True if the path is absolute, false if relative
 */
 
-public static function is_absolute_path($path)
+public static function isAbsolutePath($path)
 {
 return ((strpos($path,':')!==false)
 	||(strpos($path,'/')===0)
@@ -116,15 +116,15 @@ return ((strpos($path,':')!==false)
 * @return string The resulting absolute path
 */
 
-public static function mk_absolute_path($path,$separ=false)
+public static function mkAbsolutePath($path,$separ=false)
 {
-if (!self::is_absolute_path($path)) $path=self::combine_path(getcwd(),$path);
-return self::trailing_separ($path,$separ);
+if (!self::isAbsolutePath($path)) $path=self::combinePath(getcwd(),$path);
+return self::trailingSepar($path,$separ);
 }
 
 //---------
 
-public static function readfile($path)
+public static function readFile($path)
 {
 if (($data=@file_get_contents($path))===false)
 	throw new \Exception($path.': Cannot get file content');
@@ -148,7 +148,7 @@ return $a;
 
 //---------------------------------
 
-public static function atomic_write($path,$data)
+public static function atomicWrite($path,$data)
 {
 $tmpf=tempnam(dirname($path),'tmp_');
 
@@ -157,7 +157,7 @@ if (file_put_contents($tmpf,$data)!=strlen($data))
 
 // Windows does not support renaming to an existing file (looses atomicity)
 
-if (Util::env_is_windows()) @unlink($path);
+if (Util::envIsWindows()) @unlink($path);
 
 if (!rename($tmpf,$path))
 	{
@@ -186,7 +186,7 @@ if (!rename($tmpf,$path))
 private static $simul_inode_array=array();
 private static $simul_inode_index=1;
 
-public static function path_unique_id($prefix,$path,&$mtime)
+public static function pathUniqueID($prefix,$path,&$mtime)
 {
 if (($s=stat($path))===false) throw new \Exception("$path: File not found");
 
@@ -213,7 +213,7 @@ return sprintf('%s_%X_%X_%X',$prefix,$dev,$inode,$mtime);
 
 //---------------------------------
 
-public static function recursive_copy($src,$dst)
+public static function recursiveCopy($src,$dst)
 {
 if (is_dir($src))
 	{
@@ -222,7 +222,7 @@ if (is_dir($src))
     while(($entry=readdir($dir))!==false)
 		{
 		if (($entry==='.')||($entry==='..')) continue;
-		self::recursive_copy($src.'/'.$entry,$dst.'/'.$entry);
+		self::recursiveCopy($src.'/'.$entry,$dst.'/'.$entry);
 		}
 	closedir($dir);
 	}

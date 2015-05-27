@@ -101,7 +101,7 @@ if (!is_null($path)) $this->load($path);
 * @return void
 */
 
-public function set_path($path)
+public function setPath($path)
 {
 $this->path=$path;
 }
@@ -146,7 +146,7 @@ catch (\Exception $e)
 	throw new \Exception("$path: Cannot load file: ".$e->getMessage());
 	}
 
-$this->set_path($path);
+$this->setPath($path);
 }
 
 //----------------------------------------------------------------------------
@@ -178,7 +178,7 @@ if (file_put_contents($path,$this->magic.$data)===false)
 
 //-- Write is OK. Now we can clear the 'modified' flag
 
-parent::clear_modified();
+parent::clearModified();
 }
 
 //----------------------------------------------------------------------------
@@ -190,7 +190,7 @@ parent::clear_modified();
 * @throws Exception if write failed
 */
 
-public function save_if_modified($path=null)
+public function saveIfModified($path=null)
 {
 if ($this->modified()) $this->save($path);
 }

@@ -29,9 +29,9 @@ namespace Phool;
 * since it was created or read from persistent storage
 *
 * Each time a property is modified, the descendant class must call the
-* {@link set_modified()} method.
+* {@link setModified()} method.
 *
-* When it is saved, {@link clear_modified()} must be called
+* When it is saved, {@link clearModified()} must be called
 * 
 * The current state can be retrieved via the {@link modified()} method.
 *
@@ -55,7 +55,7 @@ private $modified_flag=false;
 
 protected function __construct()
 {
-$this->clear_modified();
+$this->clearModified();
 }
 
 //----------------------------------------------------------------------------
@@ -68,7 +68,7 @@ $this->clear_modified();
 * @return void
 */
 
-protected function set_modified($toggle=true)
+protected function setModified($toggle=true)
 {
 if ($toggle) $this->modified_flag=true;
 }
@@ -80,7 +80,7 @@ if ($toggle) $this->modified_flag=true;
 * @return void
 */
 
-protected function clear_modified()
+protected function clearModified()
 {
 $this->modified_flag=false;
 }

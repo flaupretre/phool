@@ -30,23 +30,23 @@ protected $vars=array();
 
 //------------------
 
-public static function bool_val($val)
+public static function boolVal($val)
 {
 return ($val ? 'Y' : '');
 }
 
 //------------------
 
-public function val_is_set($vname)
+public function valIsSet($vname)
 {
 return array_key_exists($vname,$this->vars);
 }
 
 //------------------
 
-public function val_is_true($vname)
+public function valIsTrue($vname)
 {
-return ($this->val_is_set($vname) ? ($this->val($vname) != '') : false);
+return ($this->valIsSet($vname) ? ($this->val($vname) != '') : false);
 }
 
 //------------------
@@ -62,20 +62,20 @@ return $this->val($vname);
 
 public function val($vname)
 {
-if (!$this->val_is_set($vname)) throw new \Exception("$vname: Variable not set");
+if (!$this->valIsSet($vname)) throw new \Exception("$vname: Variable not set");
 return $this->vars[$vname];
 }
 
 //------------------
 
-public function val_array()
+public function valArray()
 {
 return $this->vars;
 }
 
 //------------------
 
-public function setval($name,$value)
+public function setVal($name,$value)
 {
 $this->vars[$name]=trim($value);
 }
