@@ -30,17 +30,17 @@ class File
 
 public static function suffix($filename)
 {
-return self::suffix($filename);
+$dotpos=strrpos($filename,'.');
+if ($dotpos===false) return '';
+
+return strtolower(substr($filename,$dotpos+1));
 }
 
 //----
 
 public static function fileSuffix($filename)
 {
-$dotpos=strrpos($filename,'.');
-if ($dotpos===false) return '';
-
-return strtolower(substr($filename,$dotpos+1));
+return self::suffix($filename);
 }
 
 //----
