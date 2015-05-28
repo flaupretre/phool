@@ -84,7 +84,7 @@ list($opts,$args2)=Getopt::getopt2($args,$short_opts,$long_opts);
 foreach($opts as $opt_val)
 	{
 	list($opt,$arg)=$opt_val;
-	if (strlen($opt)>2) // Convert long option to short
+	if (strlen($opt)>1) // Convert long option to short
 		{
 		$opt=substr($opt,2);
 		foreach($this->opt_modifiers as $mod)
@@ -96,6 +96,7 @@ foreach($opts as $opt_val)
 				}
 			}
 		}
+	if (strlen($opt)>1) throw new \Exception("--$opt: Unrecognized option");
 	$this->processOption($opt,$arg);
 	}
 
