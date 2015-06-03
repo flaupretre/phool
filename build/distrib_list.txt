@@ -3,5 +3,4 @@
 phool.phk
 README.md
 doc/api.phk
-doc/api.pdf
 doc/xref.phk
