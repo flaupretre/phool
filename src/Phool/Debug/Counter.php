@@ -28,24 +28,53 @@ class Counter
 
 //---------
 
-public static $nb=0;
-public static $time=0.0;
-private static $t;
+private $nb=0;
+private $time=0.0;
+private $start_time;
 
-public static function start()
+//---------
+
+public function __construct()
 {
-self::$t=microtime(true);
+$this->reset();
 }
 
-public static function end()
+//---------
+
+public function reset()
 {
-self::$time+=(microtime(true)-self::$t);
-self::$nb++;
+$this->nb=0;
+$this->time=0.0;
 }
 
-public static function display()
+//---------
+
+public function start()
 {
-echo '>>> Count: '.self::$nb.' ; Time: '.self::$time."\n";
+$this->nb++;
+$this->start_time=microtime(true);
+}
+
+//---------
+
+public function stop()
+{
+$this->time+=(microtime(true)-$this->start_time);
+}
+
+//---------
+
+public function display()
+{
+echo '>>> Count: '.$this->nb.' ; Time: '.$this->time."\n";
+}
+
+//---------
+
+public function stopAndDisplay()
+{
+$this->stop();
+$this->display();
 }
 
 //----------
