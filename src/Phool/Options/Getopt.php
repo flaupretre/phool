@@ -114,13 +114,18 @@ class Getopt {
          * erroneous POSIX fix.
          */
         if ($version < 2) {
-            if (isset($args[0]{0}) && $args[0]{0} != '-') {
+            if (isset($args[0][0]) && $args[0][0] != '-') {
                 array_shift($args);
             }
         }
 
         reset($args);
-        while (list($i, $arg) = each($args)) {
+        $ignore = false;
+        foreach ($args as $i => $arg) {
+            if ($ignore) {
+              $ignore = false;
+              continue;
+            }
 
             /* The special element '--' means explicit end of
                options. Treat the rest of the arguments as non-options
@@ -130,33 +135,32 @@ class Getopt {
                 break;
             }
 
-            if ($arg{0} != '-' || (strlen($arg) > 1 && $arg{1} == '-' && !$long_options)) {
+            if ($arg[0] != '-' || (strlen($arg) > 1 && $arg[1] == '-' && !$long_options)) {
                 $non_opts = array_merge($non_opts, array_slice($args, $i));
                 break;
-            } elseif (strlen($arg) > 1 && $arg{1} == '-') {
-                self::_parseLongOption(substr($arg, 2), $long_options, $opts, $args);
+            } elseif (strlen($arg) > 1 && $arg[1] == '-') {
+                self::_parseLongOption(substr($arg, 2), $long_options, $opts, $args, $ignore, $i);
             } else {
-                self::_parseShortOption(substr($arg, 1), $short_options, $opts, $args);
+                self::_parseShortOption(substr($arg, 1), $short_options, $opts, $args, $ignore, $i);
             }
         }
-
         return array($opts, $non_opts);
     }
 
-    private static function _parseShortOption($arg, $short_options, &$opts, &$args)
+    private static function _parseShortOption($arg, $short_options, &$opts, &$args, &$ignore, $index)
     {
         for ($i = 0; $i < strlen($arg); $i++) {
-            $opt = $arg{$i};
+            $opt = $arg[$i];
             $opt_arg = null;
 
             /* Try to find the short option in the specifier string. */
-            if (($spec = strstr($short_options, $opt)) === false || $arg{$i} == ':')
+            if (($spec = strstr($short_options, $opt)) === false || $arg[$i] == ':')
             {
                 throw new \Exception(__CLASS__.": unrecognized option -- $opt");
             }
 
-            if (strlen($spec) > 1 && $spec{1} == ':') {
-                if (strlen($spec) > 2 && $spec{2} == ':') {
+            if (strlen($spec) > 1 && $spec[1] == ':') {
+                if (strlen($spec) > 2 && $spec[2] == ':') {
                     if ($i + 1 < strlen($arg)) {
                         /* Option takes an optional argument. Use the remainder of
                            the arg string if there is anything left. */
@@ -169,10 +173,14 @@ class Getopt {
                     if ($i + 1 < strlen($arg)) {
                         $opts[] = array($opt,  substr($arg, $i + 1));
                         break;
-                    } else if (list(, $opt_arg) = each($args))
-                        /* Else use the next argument. */;
-                    else
-                        throw new \Exception(__CLASS__.": option requires an argument -- $opt");
+                    } else {
+                        if ($index < (count($args) + 1)) {
+                          $opt_arg = $args[$index + 1];
+                          $ignore = true;
+                        } else {
+                          throw new \Exception(__CLASS__.": option requires an argument -- $opt");
+                        }
+                    }
                 }
             }
 
@@ -180,7 +188,7 @@ class Getopt {
         }
     }
 
-    private static function _parseLongOption($arg, $long_options, &$opts, &$args)
+    private static function _parseLongOption($arg, $long_options, &$opts, &$args, &$ignore, $index)
     {
         @list($opt, $opt_arg) = explode('=', $arg);
         $opt_len = strlen($opt);
@@ -197,7 +205,7 @@ class Getopt {
 
             /* Check that the options uniquely matches one of the allowed
                options. */
-            if ($opt_rest != '' && $opt{0} != '=' &&
+            if ($opt_rest != '' && $opt[0] != '=' &&
                 $i + 1 < count($long_options) &&
                 $opt == substr($long_options[$i+1], 0, $opt_len)) {
                 throw new \Exception(__CLASS__.": option --$opt is ambiguous");
@@ -207,7 +215,10 @@ class Getopt {
                 if (substr($long_opt, -2) != '==') {
                     /* Long option requires an argument.
                        Take the next argument if one wasn't specified. */;
-                    if (!strlen($opt_arg) && !(list(, $opt_arg) = each($args))) {
+                    if ($index < (count($args) + 1)) {
+                        $opt_arg = $args[$index + 1];
+                        $ignore = true;
+                    } else {
                         throw new \Exception(__CLASS__.": option --$opt requires an argument");
                     }
                 }

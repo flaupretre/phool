@@ -1,6 +1,7 @@
 doc/phool_api.phk
 doc/api.psf
 doc/phool_xref.phk
-doc/xref.psf
-./phool.phk
-./phool.psf
+xref.psf
+xref.phk
+phool.phk
+phool.psf

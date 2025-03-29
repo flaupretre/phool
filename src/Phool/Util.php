@@ -49,11 +49,13 @@ if (!extension_loaded($ext)) throw new \Exception("$ext: Cannot load extension")
 public static function loadExtensions($ext_list)
 {
 $failed_ext=array();
-foreach($ext_list as $ext)
-	{
-	try { self::loadExtension($ext); }
-	catch (\Exception $e) { $failed_ext[]=$ext; }
-	}
+foreach($ext_list as $ext) {
+	try {
+    self::loadExtension($ext);
+  }	catch (\Exception $e) {
+    $failed_ext[]=$ext;
+  }
+}
 if (count($failed_ext))
 	throw new \Exception('Cannot load the following required extension(s): '
 		.implode(' ',$failed_ext));
